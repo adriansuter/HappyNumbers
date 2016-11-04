@@ -14,6 +14,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * This is the main application class.
+ *
+ * @author Adrian Suter, https://github.com/adriansuter/
+ */
 public class HappyNumbers {
 
     public static void main(String[] args) {
