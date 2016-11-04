@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <!--
+    Path where you would like to get the output files saved to. If empty
+    the output files would be written into the current working directoy.
+    -->
+    <entry key="outputPath">C:\Users\Adrian\Desktop\Maths\Sum of digits squared</entry>
+
+    <!--
+    Absolute path to the GraphViz-dot exe file. To disable the graphs, simply
+    remove the following entry.
+    -->
+    <entry key="dotPath">C:\Program Files (x86)\Graphviz2.38\bin\dot.exe</entry>
+    
+    <!--
+    Should the source files (.gv) used to generate the graphs be deleted after
+    the png graphs had been created? (true|false)
+    -->
+    <entry key="dotDeleteSource">true</entry>
+    
+    <!--
+    Filename for the GraphViz-dot logs. Remove this entry to disable these logs.
+    -->
+    <entry key="dotLog">_dot.log</entry>
+    
+    <!--
+    The bases you are interested in as comma-separated list. Each base has to be
+    between 2 and 36.
+    Example: 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36
+    -->
+    <entry key="bases">2,4,8,10,16</entry>
+    
+    <!--
+    The number provider to be used.
+    TwoDigits | ThreeDigits | TwoAndThreeDigits
+    -->
+    <entry key="numberProvider">TwoDigits</entry>
+
+</properties>
