@@ -1,6 +1,6 @@
 package happynumbers.output;
 
-import happynumbers.HappyNumbersDetector;
+import happynumbers.HappyNumbersCalculator;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,7 +21,7 @@ public class GraphGenerator {
         this._dotLog = dotLog;
     }
 
-    public void generate(HappyNumbersDetector detector, String gvFilename, String pngFilename) {
+    public void generate(HappyNumbersCalculator detector, String gvFilename, String pngFilename) {
         StringBuilder sb = new StringBuilder();
         sb.append("digraph G {");
         sb.append("label=\"Base: ").append(detector.getRadix()).append(", Mapper: ").append(detector.getMapper().getLabel()).append("\";");

@@ -1,10 +1,12 @@
-package happynumbers;
+package happynumbers.mapper;
 
-public class SumOfDigitsPowerX implements IMapper {
+import happynumbers.mapper.IMapper;
+
+public class SumOfDigitsPowerXMapper implements IMapper {
 
     private final int _exponent;
 
-    public SumOfDigitsPowerX(int exponent) {
+    public SumOfDigitsPowerXMapper(int exponent) {
         this._exponent = exponent;
     }
 

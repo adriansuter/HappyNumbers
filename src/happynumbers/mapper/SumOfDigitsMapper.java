@@ -1,6 +1,8 @@
-package happynumbers;
+package happynumbers.mapper;
 
-public class SumOfDigits implements IMapper {
+import happynumbers.mapper.IMapper;
+
+public class SumOfDigitsMapper implements IMapper {
 
     @Override
     public String getLabel() {

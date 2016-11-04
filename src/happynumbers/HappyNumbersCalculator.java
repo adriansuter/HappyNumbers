@@ -1,12 +1,13 @@
 package happynumbers;
 
+import happynumbers.mapper.IMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import happynumbers.provider.INumberProvider;
 
-public class HappyNumbersDetector {
+public class HappyNumbersCalculator {
 
     /**
      *
@@ -48,7 +49,7 @@ public class HappyNumbersDetector {
      * @param numberProvider
      * @param mapper
      */
-    public HappyNumbersDetector(int radix, INumberProvider numberProvider, IMapper mapper) {
+    public HappyNumbersCalculator(int radix, INumberProvider numberProvider, IMapper mapper) {
         this._radix = radix;
         this._numberProvider = numberProvider;
         this._mapper = mapper;

@@ -1,4 +1,4 @@
-package happynumbers;
+package happynumbers.mapper;
 
 public interface IMapper {
 

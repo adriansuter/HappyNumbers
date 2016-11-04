@@ -1,5 +1,7 @@
 package happynumbers;
 
+import happynumbers.mapper.SumOfDigitsSquaredMapper;
+import happynumbers.mapper.IMapper;
 import happynumbers.provider.TwoDigitNumberProvider;
 import java.io.File;
 import happynumbers.output.GraphGenerator;
@@ -96,7 +98,7 @@ public class HappyNumbers {
                     throw new NumberFormatException();
                 }
 
-                HappyNumbersDetector detector = new HappyNumbersDetector(radix, numberProvider, mapper);
+                HappyNumbersCalculator detector = new HappyNumbersCalculator(radix, numberProvider, mapper);
                 happyNumbersWriter.write(detector, "happy_" + radix + ".txt");
 
                 if (graphGenerator != null) {

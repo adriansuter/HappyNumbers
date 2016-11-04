@@ -1,10 +1,12 @@
-package happynumbers;
+package happynumbers.mapper;
 
-public class SumOfDigitsCubedMapper implements IMapper {
+import happynumbers.mapper.IMapper;
+
+public class SumOfDigitsSquaredMapper implements IMapper {
 
     @Override
     public String getLabel() {
-        return "Sum of the digits cubed";
+        return "Sum of the digits squared";
     }
 
     @Override
@@ -15,7 +17,7 @@ public class SumOfDigitsCubedMapper implements IMapper {
         for (int i = 0; i < nr.length(); i++) {
             String digit = nr.substring(i, i + 1);
             int base10 = Integer.parseInt(digit, radix);
-            int square = (int) Math.pow(base10, 3);
+            int square = (int) Math.pow(base10, 2);
 
             sum += square;
         }

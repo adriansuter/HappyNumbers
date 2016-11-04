@@ -1,6 +1,6 @@
 package happynumbers.output;
 
-import happynumbers.HappyNumbersDetector;
+import happynumbers.HappyNumbersCalculator;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,7 +14,7 @@ public class HappyNumbersWriter {
         this._directory = directory;
     }
 
-    public void write(HappyNumbersDetector detector, String filename) {
+    public void write(HappyNumbersCalculator detector, String filename) {
         BufferedWriter writer = null;
         try {
             File file = new File(_directory.getCanonicalPath() + System.getProperty("file.separator") + filename);
