@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/adriansuter/HappyNumbers.svg?branch=master)](https://travis-ci.org/adriansuter/HappyNumbers)
+
 # Happy Numbers
 
 This is a small java application that can be used to find happy numbers in all
