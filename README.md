@@ -18,4 +18,4 @@ The files in this repository are optimized to be used in the NetBeans IDE.
 
 ## How to run
 
-Once compiled, you can run the jar file as usual. But you have to make sure, that in the working directory there is the config.xml file.
+Once compiled, you can run the jar file as usual. But you have to make sure, that in the working directory there is the `config.xml` file.

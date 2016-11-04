@@ -5,7 +5,7 @@
     Path where you would like to get the output files saved to. If empty
     the output files would be written into the current working directoy.
     -->
-    <entry key="outputPath">C:\Users\Adrian\Desktop\Maths</entry>
+    <entry key="outputPath">C:\HappyNumbers</entry>
 
     <!--
     Absolute path to the GraphViz-dot exe file. To disable the graphs, simply
