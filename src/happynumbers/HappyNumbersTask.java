@@ -23,6 +23,11 @@
  */
 package happynumbers;
 
+import happynumbers.provider.NumberProvider;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javafx.concurrent.Task;
 
 /**
@@ -30,29 +35,49 @@ import javafx.concurrent.Task;
  * @author Adrian Suter, https://github.com/adriansuter/
  */
 public class HappyNumbersTask extends Task<HappyNumbersResult> {
-    
+
+    private final NumberProvider _numberProvider;
+    private final ArrayList<Integer> _selectedBases;
+
+    public HappyNumbersTask(NumberProvider numberProvider, ArrayList<Integer> selectedBases) {
+        this._numberProvider = numberProvider;
+        this._selectedBases = selectedBases;
+    }
+
     @Override
     protected HappyNumbersResult call() throws Exception {
         HappyNumbersResult result = new HappyNumbersResult();
-        
-        this.updateMessage("Hello world");
-        
-        for (int i = 0; i < 10000; i++) {
+
+        Iterator<Integer> basesIterator = this._selectedBases.iterator();
+        while (basesIterator.hasNext()) {
             if (isCancelled()) {
+                this.updateMessage("Cancelled");
                 break;
             }
-            
-            this.updateProgress(i, 9999);
-            this.updateMessage(" " + i);
-            
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException exception) {
-                break;
+            Integer base = basesIterator.next();
+
+            HashMap<Integer, String> numbers = this._numberProvider.getNumbers(base);
+            this.updateMessage("Handling base " + base + ". #numbers: " + numbers.size());
+
+            Iterator<Map.Entry<Integer, String>> numberIterator = numbers.entrySet().iterator();
+            while (numberIterator.hasNext()) {
+                if (isCancelled()) {
+                    this.updateMessage("Cancelled");
+                    break;
+                }
+
+                Map.Entry<Integer, String> number = numberIterator.next();
+                System.out.println(number.getKey() + ": " + number.getValue());
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    break;
+                }
             }
         }
-        
+
         return result;
     }
-    
+
 }

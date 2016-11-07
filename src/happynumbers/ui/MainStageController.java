@@ -25,17 +25,32 @@ package happynumbers.ui;
 
 import happynumbers.HappyNumbersTask;
 import happynumbers.Main;
+import happynumbers.provider.NumberProvider;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -49,6 +64,9 @@ import javax.script.ScriptException;
 public class MainStageController implements Initializable {
 
     @FXML
+    private FlowPane baseCheckBoxPane;
+
+    @FXML
     private Button testMapperButton;
 
     @FXML
@@ -60,6 +78,37 @@ public class MainStageController implements Initializable {
     @FXML
     private Label taskMessageLabel;
 
+    @FXML
+    private TextFlow mapperFunctionTextFlow;
+
+    @FXML
+    private CheckBox numbers1CheckBox;
+
+    @FXML
+    private CheckBox numbers2CheckBox;
+
+    @FXML
+    private CheckBox numbers3CheckBox;
+
+    @FXML
+    private CheckBox numbers4CheckBox;
+
+    @FXML
+    private Button startButton;
+
+    @FXML
+    private Button stopButton;
+
+    public BooleanProperty running = new SimpleBooleanProperty(false);
+
+    public boolean isRunning() {
+        return running.get();
+    }
+
+    public void setRunning(boolean running) {
+        this.running.set(running);
+    }
+
     /**
      * Initializes the controller class.
      *
@@ -68,16 +117,80 @@ public class MainStageController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.startButton.disableProperty().bind(running);
+        this.stopButton.visibleProperty().bind(running);
+        this.taskProgressBar.visibleProperty().bind(running);
+
+        ///
+        Text text1 = new Text("Available variables:\n");
+        text1.setFont(Font.font("Helvetica", FontWeight.BOLD, 12));
+
+        Text text2 = new Text("number [int]");
+        text2.setFill(Color.BLUE);
+
+        Text text3 = new Text(" The number in base 10.\n");
+
+        Text text4 = new Text("numberBase [String]");
+        text4.setFill(Color.BLUE);
+
+        Text text5 = new Text(" The number in the given base.\n");
+
+        Text text6 = new Text("base [int]");
+        text6.setFill(Color.BLUE);
+
+        Text text7 = new Text(" The base.\n");
+
+        mapperFunctionTextFlow.getChildren().addAll(text1, text2, text3, text4, text5, text6, text7);
     }
 
     @FXML
     protected void handleStartButtonAction(ActionEvent event) {
-        HappyNumbersTask task = new HappyNumbersTask();
+        if (this.isRunning()) {
+            return;
+        }
 
+        this.setRunning(true);
+
+        NumberProvider numberProvider = new NumberProvider(
+                this.numbers1CheckBox.isSelected(),
+                this.numbers2CheckBox.isSelected(),
+                this.numbers3CheckBox.isSelected(),
+                this.numbers4CheckBox.isSelected());
+
+        int base = 2;
+        ArrayList<Integer> selectedBases = new ArrayList<>();
+        Iterator<Node> iterator = this.baseCheckBoxPane.getChildren().iterator();
+        while (iterator.hasNext()) {
+            Node next = iterator.next();
+            if (next instanceof CheckBox) {
+                if (((CheckBox) next).isSelected()) {
+                    selectedBases.add(base);
+                }
+                base++;
+            }
+        }
+
+        task = new HappyNumbersTask(numberProvider, selectedBases);
+        task.setOnSucceeded((WorkerStateEvent event1) -> {
+            this.setRunning(false);
+            System.out.println("DONE");
+        });
         this.taskProgressBar.progressProperty().bind(task.progressProperty());
         this.taskMessageLabel.textProperty().bind(task.messageProperty());
 
-        new Thread(task).start();
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private HappyNumbersTask task;
+
+    @FXML
+    protected void handleStopButtonAction(ActionEvent event) {
+        if (this.isRunning()) {
+            task.cancel();
+            this.setRunning(false);
+        }
     }
 
     @FXML
