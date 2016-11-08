@@ -23,8 +23,13 @@
  */
 package happynumbers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeMap;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -52,9 +57,28 @@ public class HappyNumbersResult {
         return this.numbersCount.get();
     }
 
-    public HappyNumbersResult(int base, int numbersCount) {
+    public StringProperty finalHappyNumbers = new SimpleStringProperty("");
+
+    public final void setFinalHappyNumbers(String finalHappyNumbers) {
+        this.finalHappyNumbers.set(finalHappyNumbers);
+    }
+
+    public String getFinalHappyNumbers() {
+        return this.finalHappyNumbers.get();
+    }
+
+    public HappyNumbersResult(int base, int numbersCount, ArrayList<String> finalHappyNumbers) {
         this.setBase(base);
         this.setNumbersCount(numbersCount);
+
+        StringBuilder sb = new StringBuilder();
+        finalHappyNumbers.stream().forEach((s) -> {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(s);
+        });
+        this.setFinalHappyNumbers(sb.toString());
     }
 
 }

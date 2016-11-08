@@ -142,6 +142,7 @@
               <columns>
                 <TableColumn fx:id="baseTableColumn" prefWidth="75.0" text="Base" />
                 <TableColumn fx:id="numbersCountTableColumn" prefWidth="75.0" text="#Numbers" />
+                  <TableColumn fx:id="finalHappyNumbersTableColumn" prefWidth="75.0" text="Happy Numbers" />
               </columns>
             </TableView>
          </children>

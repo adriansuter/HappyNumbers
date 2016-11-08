@@ -60,7 +60,7 @@ public class NumberProvider {
             int length = iterator.next();
 
             for (int number = (int) Math.pow(base, length - 1); number < (int) Math.pow(base, length); number++) {
-                numbers.put(number, Integer.toString(number, base));
+                numbers.put(number, Integer.toString(number, base).toUpperCase());
             }
         }
 

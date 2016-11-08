@@ -28,7 +28,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
+import javax.script.Invocable;
+import javax.script.ScriptException;
 
 /**
  *
@@ -37,47 +42,93 @@ import javafx.concurrent.Task;
 public class HappyNumbersTask extends Task<HappyNumbersResult> {
 
     private final NumberProvider _numberProvider;
-    private final ArrayList<Integer> _selectedBases;
+    private final int _base;
+    private final Invocable _invocable;
 
-    public HappyNumbersTask(NumberProvider numberProvider, ArrayList<Integer> selectedBases) {
+    /**
+     * Holds the mappings for the numbers.
+     *
+     * For example (in base 10 and in default "square the digits and sum up"):
+     * 10 => 1, 11 => 2, 12 => 5, etc.
+     */
+    private final HashMap<String, String> _mappings = new HashMap<>();
+
+    private final TreeMap<Integer, String> _happyNumbers = new TreeMap<>();
+
+    public HappyNumbersTask(NumberProvider numberProvider, int base, Invocable invocable) {
         this._numberProvider = numberProvider;
-        this._selectedBases = selectedBases;
+        this._base = base;
+        this._invocable = invocable;
     }
 
     @Override
     protected HappyNumbersResult call() throws Exception {
-        HappyNumbersResult result = new HappyNumbersResult(99, 99);
+        HashMap<Integer, String> numbers = this._numberProvider.getNumbers(_base);
+        this.updateMessage("Handling base " + _base + ". #numbers: " + numbers.size());
 
-        Iterator<Integer> basesIterator = this._selectedBases.iterator();
-        while (basesIterator.hasNext()) {
+        // Holds a list of all happy candidates.
+        HashMap<Integer, String> happyCandidates = new HashMap<>();
+
+        Iterator<Map.Entry<Integer, String>> numberIterator = numbers.entrySet().iterator();
+        while (numberIterator.hasNext()) {
             if (isCancelled()) {
                 this.updateMessage("Cancelled");
                 break;
             }
-            Integer base = basesIterator.next();
 
-            HashMap<Integer, String> numbers = this._numberProvider.getNumbers(base);
-            this.updateMessage("Handling base " + base + ". #numbers: " + numbers.size());
+            happyCandidates.clear();
 
-            Iterator<Map.Entry<Integer, String>> numberIterator = numbers.entrySet().iterator();
-            while (numberIterator.hasNext()) {
-                if (isCancelled()) {
-                    this.updateMessage("Cancelled");
+            // Get the next number as integer and in base representation.
+            Map.Entry<Integer, String> number = numberIterator.next();
+
+            int nr = number.getKey();
+            String nrBase = number.getValue();
+
+            while (true) {
+                // Check if we already calculated the map for this number.
+                if (_mappings.containsKey(nrBase)) {
+                    if (nr == 1 || _happyNumbers.containsKey(nr)) {
+                        // This is a happy number.
+                        Iterator<Map.Entry<Integer, String>> iterator = happyCandidates.entrySet().iterator();
+                        while (iterator.hasNext()) {
+                            Map.Entry<Integer, String> next = iterator.next();
+                            _happyNumbers.put(next.getKey(), next.getValue());
+                        }
+                    }
                     break;
                 }
 
-                Map.Entry<Integer, String> number = numberIterator.next();
-                System.out.println(number.getKey() + ": " + number.getValue());
+                happyCandidates.put(nr, nrBase);
 
                 try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    break;
+                    Object answer = _invocable.invokeFunction("mapper", nr, nrBase, _base);
+                    if (answer instanceof Double || answer instanceof Integer) {
+                        int temporary = (int) Double.parseDouble(answer.toString());
+                        String temporaryBase = Integer.toString(temporary, _base).toUpperCase();
+
+                        _mappings.put(nrBase, temporaryBase);
+
+                        nr = temporary;
+                        nrBase = temporaryBase;
+                    }
+                } catch (NoSuchMethodException | ScriptException exception) {
+                    throw new Exception("Mapping could not applied");
                 }
             }
         }
 
-        return result;
+        ArrayList<String> finalHappyNumbers = new ArrayList<>();
+        Iterator<Map.Entry<Integer, String>> happyIterator = _happyNumbers.entrySet().iterator();
+        while (happyIterator.hasNext()) {
+            Map.Entry<Integer, String> happyNumber = happyIterator.next();
+
+            if (numbers.containsKey(happyNumber.getKey())) {
+                // We are only interested in those numbers that were actually in the input number set.
+                finalHappyNumbers.add(happyNumber.getValue());
+            }
+        }
+
+        return new HappyNumbersResult(_base, numbers.size(), finalHappyNumbers);
     }
 
 }
