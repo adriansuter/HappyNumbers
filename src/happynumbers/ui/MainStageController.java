@@ -23,6 +23,7 @@
  */
 package happynumbers.ui;
 
+import happynumbers.HappyNumbersResult;
 import happynumbers.HappyNumbersTask;
 import happynumbers.Main;
 import happynumbers.provider.NumberProvider;
@@ -34,9 +35,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -44,7 +46,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -99,6 +104,17 @@ public class MainStageController implements Initializable {
     @FXML
     private Button stopButton;
 
+    @FXML
+    private TableView<HappyNumbersResult> tableView;
+
+    @FXML
+    private TableColumn<HappyNumbersResult, Integer> baseTableColumn;
+
+    @FXML
+    private TableColumn<HappyNumbersResult, Integer> numbersCountTableColumn;
+
+    private final ObservableList<HappyNumbersResult> results = FXCollections.observableArrayList();
+
     public BooleanProperty running = new SimpleBooleanProperty(false);
 
     public boolean isRunning() {
@@ -120,6 +136,14 @@ public class MainStageController implements Initializable {
         this.startButton.disableProperty().bind(running);
         this.stopButton.visibleProperty().bind(running);
         this.taskProgressBar.visibleProperty().bind(running);
+
+        this.tableView.setItems(this.results);
+        this.baseTableColumn.setCellValueFactory(new PropertyValueFactory("base"));
+        this.numbersCountTableColumn.setCellValueFactory(new PropertyValueFactory("numbersCount"));
+
+        // Tests....
+        results.add(new HappyNumbersResult(10, 16));
+        results.add(new HappyNumbersResult(12, 12));
 
         ///
         Text text1 = new Text("Available variables:\n");

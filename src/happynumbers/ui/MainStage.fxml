@@ -32,14 +32,12 @@
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 12 (Duodecimal)" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 13" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 14" />
-                                    <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 6 (Senary)" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 15" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" selected="true" text="Base 16 (Hexadecimal)" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 17" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 18" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 19" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 20 (Vigesimal)" />
-                                    <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 21" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 21" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 22" />
                                     <CheckBox mnemonicParsing="false" prefWidth="160.0" text="Base 23" />
@@ -140,6 +138,12 @@
                </children>
             </FlowPane>
                   <Label fx:id="taskMessageLabel" text="Label" />
+            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="baseTableColumn" prefWidth="75.0" text="Base" />
+                <TableColumn fx:id="numbersCountTableColumn" prefWidth="75.0" text="#Numbers" />
+              </columns>
+            </TableView>
          </children>
          <padding>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

@@ -23,10 +23,38 @@
  */
 package happynumbers;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  *
  * @author Adrian Suter, https://github.com/adriansuter/
  */
 public class HappyNumbersResult {
-    
+
+    public IntegerProperty base = new SimpleIntegerProperty(0);
+
+    public final void setBase(int base) {
+        this.base.set(base);
+    }
+
+    public int getBase() {
+        return this.base.get();
+    }
+
+    public IntegerProperty numbersCount = new SimpleIntegerProperty(0);
+
+    public final void setNumbersCount(int numbersCount) {
+        this.numbersCount.set(numbersCount);
+    }
+
+    public int getNumbersCount() {
+        return this.numbersCount.get();
+    }
+
+    public HappyNumbersResult(int base, int numbersCount) {
+        this.setBase(base);
+        this.setNumbersCount(numbersCount);
+    }
+
 }

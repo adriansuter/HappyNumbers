@@ -46,7 +46,7 @@ public class HappyNumbersTask extends Task<HappyNumbersResult> {
 
     @Override
     protected HappyNumbersResult call() throws Exception {
-        HappyNumbersResult result = new HappyNumbersResult();
+        HappyNumbersResult result = new HappyNumbersResult(99, 99);
 
         Iterator<Integer> basesIterator = this._selectedBases.iterator();
         while (basesIterator.hasNext()) {
